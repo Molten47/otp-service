@@ -1,0 +1,51 @@
+[package]
+name = "otp-service"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# runtime
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "signal"] }
+
+# http server
+axum = "0.8"
+tower = { version = "0.5", features = ["limit", "timeout", "util"] }
+tower-http = { version = "0.6", features = ["trace", "request-id"] }
+
+# http client (Resend)
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "http2"] }
+
+# database
+sqlx = { version = "0.8", default-features = false, features = [
+  "runtime-tokio", "tls-rustls", "postgres", "macros", "migrate", "uuid", "chrono", "json"
+] }
+async-trait = "0.1"
+
+# serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# otp generation + hashing
+rand = "0.9"
+argon2 = "0.5"
+
+# errors
+thiserror = "2"
+anyhow = "1"
+
+
+# observability
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# misc
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+email_address = "0.2.9"
+dotenvy = "0.15.7"
+svix = "2.5.0"
+governor = "0.10.4"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full", "test-util"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
